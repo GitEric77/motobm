@@ -103,18 +103,18 @@ def filter_list():
         if args.six and not len(str(item['id'])) == 6:
             continue
 
-        if item['callsign'] == '':
-            item['callsign'] = item['id']
+        if item['city'] == '':
+            item['city'] = item['callsign']
 
-        item['callsign'] = item['callsign'].split()[0]
+#        item['city'] = item['city'].split()[0]
 
-        if any((existing['rx'] == item['rx'] and existing['tx'] == item['tx'] and existing['callsign'] == item[
-            'callsign']) for existing in filtered_list):
+        if any((existing['rx'] == item['rx'] and existing['tx'] == item['tx'] and existing['city'] == item[
+            'city']) for existing in filtered_list):
             continue
 
-        if not item['callsign'] in existing: existing[item['callsign']] = 0
-        existing[item['callsign']] += 1
-        item['turn'] = existing[item['callsign']]
+        if not item['city'] in existing: existing[item['city']] = 0
+        existing[item['city']] += 1
+        item['turn'] = existing[item['city']]
 
         filtered_list.append(item)
 
@@ -136,7 +136,7 @@ def process_channels():
             channels += format_channel(item)
 
         print('\n',
-              tabulate(output_list, headers=['Callsign', 'RX', 'TX', 'CC', 'City', 'Last seen', 'URL'],
+              tabulate(output_list, headers=['City', 'RX', 'TX', 'CC', 'Callsign', 'Last seen', 'URL'],
                        disable_numparse=True),
               '\n')
 
@@ -166,16 +166,16 @@ def format_channel(item):
     global existing
     global output_list
 
-    if existing[item['callsign']] == 1:
-        ch_alias = item['callsign']
+    if existing[item['city']] == 1:
+        ch_alias = item['city']
     else:
-        ch_alias = f"{item['callsign']} #{item['turn']}"
+        ch_alias = f"{item['city']} #{item['turn']}"
 
     ch_rx = item['rx']
     ch_tx = item['tx']
     ch_cc = item['colorcode']
 
-    output_list.append([ch_alias, ch_rx, ch_tx, ch_cc, item['city'], item['last_seen'],
+    output_list.append([ch_alias, ch_rx, ch_tx, ch_cc, item['callsign'], item['last_seen'],
                         f"https://brandmeister.network/?page=repeater&id={item['id']}"])
 
     if item['rx'] == item['tx']:

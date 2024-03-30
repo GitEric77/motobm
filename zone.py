@@ -104,9 +104,8 @@ def filter_list():
             continue
 
         if item['city'] == '':
-            item['city'] = item['callsign']
-
-#        item['city'] = item['city'].split()[0]
+           item['city'] = item['id']
+#        item['callsign'] = item['callsign'].split()[0]
 
         if any((existing['rx'] == item['rx'] and existing['tx'] == item['tx'] and existing['city'] == item[
             'city']) for existing in filtered_list):

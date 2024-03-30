@@ -1,0 +1,5 @@
+Todo:
+Fix repeaters missing "city" value with "id" value
+Find each repeater ID from the filtered list
+Fetch and store the static talkgroups by timeslot for each repeater ID
+Create a channel for each static talkgroup 

@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser(description='Generate MOTOTRBO zone files from 
 parser.add_argument('-f', '--force', action='store_true',
                     help='Forcibly download repeater list even if it exists locally.')
 parser.add_argument('-n', '--name', required=True, help='Zone name. Choose it freely on your own.')
-parser.add_argument('-b', '--band', choices=['vhf', 'uhf'], required=True, help='Repeater band.')
+parser.add_argument('-b', '--band', choices=['vhf', 'uhf', '900'], required=True, help='Repeater band.')
 
 parser.add_argument('-t', '--type', choices=['mcc', 'qth', 'gps'], required=True,
                     help='Select repeaters by MCC code, QTH locator index or GPS coordinates.')
@@ -76,7 +76,8 @@ def filter_list():
 
     for item in sorted_list:
         if not ((args.band == 'vhf' and item['rx'].startswith('1')) or (
-                args.band == 'uhf' and item['rx'].startswith('4'))):
+                args.band == 'uhf' and item['rx'].startswith('4')) or (
+                args.band == '900' and item['rx'].startswith('9'))):
             continue
 
         if args.type == 'mcc':
@@ -103,10 +104,14 @@ def filter_list():
         if args.six and not len(str(item['id'])) == 6:
             continue
 
-        if item['city'] == '':
-           item['city'] = item['id']
-#        item['callsign'] = item['callsign'].split()[0]
+        
+        if item['city'] is None:
+            item['city'] = item['id'] 
+        
+        item['city'] = str(item['city'])[:12]
 
+#        item['city'] = str(item['city']).split(',')[0]
+        
         if any((existing['rx'] == item['rx'] and existing['tx'] == item['tx'] and existing['city'] == item[
             'city']) for existing in filtered_list):
             continue
@@ -114,7 +119,7 @@ def filter_list():
         if not item['city'] in existing: existing[item['city']] = 0
         existing[item['city']] += 1
         item['turn'] = existing[item['city']]
-
+       
         filtered_list.append(item)
 
     f.close()

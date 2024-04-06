@@ -17,7 +17,7 @@ optional arguments:
   -h, --help            show this help message and exit
   -f, --force           Forcibly download repeater list even if it exists locally.
   -n NAME, --name NAME  Zone name. Choose it freely on your own.
-  -b {vhf,uhf}, --band {vhf,uhf}
+  -b {vhf,uhf,900}, --band {vhf,uhf,900}
                         Repeater band.
   -t {mcc,qth,gps}, --type {mcc,qth,gps}
                         Select repeaters by MCC code, QTH locator index or GPS coordinates.

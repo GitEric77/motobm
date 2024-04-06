@@ -110,7 +110,7 @@ def filter_list():
         
         item['city'] = str(item['city'])[:12]
 
-#        item['city'] = str(item['city']).split(',')[0]
+        item['city'] = str(item['city']).split(',')[0]
         
         if any((existing['rx'] == item['rx'] and existing['tx'] == item['tx'] and existing['city'] == item[
             'city']) for existing in filtered_list):
